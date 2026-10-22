@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Prueba DevSecOps">
+  <rect width="32" height="32" rx="6" fill="#c8102e" />
+  <path d="M16 6 L25 10 v7c0 5-3.8 8.3-9 9.8C10.8 25.3 7 22 7 17v-7z" fill="#ffffff" />
+  <path d="M11.5 16.2 L14.8 19.5 L20.8 13.5" fill="none" stroke="#c8102e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

@@ -27,19 +27,39 @@ El puerto se puede cambiar: `npm start -- 8080` o con la variable `PORT`.
 .
 ├── scripts/
 │   └── dev-server.js      Servidor estatico de desarrollo (Node nativo)
+├── docs/
+│   └── historias-usuario.md  Backlog con criterios de aceptacion y seguridad
 ├── src/
 │   ├── index.html         Punto de entrada
+│   ├── favicon.svg        Icono del sitio
 │   ├── css/
 │   │   └── styles.css     Estilos
 │   └── js/
 │       ├── app.js         Conexion con el DOM
 │       └── utils.js       Logica pura (lo que cubren los tests)
 ├── tests/
+│   ├── dev-server.test.js Cabeceras de seguridad y path traversal
 │   └── utils.test.js      Tests unitarios
 ├── .editorconfig
 ├── .gitignore
 └── package.json
 ```
+
+## Seguridad del servidor de desarrollo
+
+`scripts/dev-server.js` es **exclusivamente para desarrollo local y no debe
+exponerse en red**. Aun asi aplica las medidas de HU-07:
+
+- Cabeceras en toda respuesta, incluidas las de error: `Content-Security-Policy`
+  (`default-src 'self'`, sin `unsafe-inline` ni `unsafe-eval`),
+  `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer` y
+  `X-Frame-Options: DENY`.
+- Solo sirve archivos dentro de `src/`; salir de ahi responde 403, incluyendo
+  rutas codificadas (`..%2f`) y rutas absolutas.
+- Los errores devuelven mensajes genericos, sin rutas del sistema ni trazas.
+- No revela el software ni la version del servidor.
+
+Todo lo anterior esta cubierto por `tests/dev-server.test.js`.
 
 ## Convenciones
 

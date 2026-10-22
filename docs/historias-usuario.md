@@ -25,18 +25,18 @@ revisión manual.
 
 ## Resumen
 
-| ID | Historia | Prioridad | Puntos |
-| --- | --- | --- | --- |
-| HU-01 | Registrar una incidencia | Alta | 5 |
-| HU-02 | Consultar el listado de incidencias | Alta | 3 |
-| HU-03 | Filtrar y buscar incidencias | Media | 3 |
-| HU-04 | Cambiar el estado de una incidencia | Alta | 5 |
-| HU-05 | Conservar las incidencias entre sesiones | Alta | 5 |
-| HU-06 | Exportar el registro a CSV | Baja | 3 |
-| HU-07 | Servir la aplicación con cabeceras de seguridad | Alta | 3 |
-| HU-08 | Validar cada cambio con un pipeline de CI | Alta | 5 |
-| HU-09 | Analizar código, dependencias y secretos en CI | Alta | 8 |
-| HU-10 | Usar la aplicación con teclado y lector de pantalla | Media | 5 |
+| ID | Historia | Prioridad | Puntos | Estado |
+| --- | --- | --- | --- | --- |
+| HU-01 | Registrar una incidencia | Alta | 5 | Pendiente |
+| HU-02 | Consultar el listado de incidencias | Alta | 3 | Pendiente |
+| HU-03 | Filtrar y buscar incidencias | Media | 3 | Pendiente |
+| HU-04 | Cambiar el estado de una incidencia | Alta | 5 | Pendiente |
+| HU-05 | Conservar las incidencias entre sesiones | Alta | 5 | Pendiente |
+| HU-06 | Exportar el registro a CSV | Baja | 3 | Pendiente |
+| HU-07 | Servir la aplicación con cabeceras de seguridad | Alta | 3 | **Terminada** |
+| HU-08 | Validar cada cambio con un pipeline de CI | Alta | 5 | Pendiente |
+| HU-09 | Analizar código, dependencias y secretos en CI | Alta | 8 | Pendiente |
+| HU-10 | Usar la aplicación con teclado y lector de pantalla | Media | 5 | Pendiente |
 
 **Total: 45 puntos.**
 
@@ -312,10 +312,10 @@ Aplica a todas las historias, además de sus criterios propios:
 - **CS-07.5** Se documenta que este servidor es exclusivamente para desarrollo
   local y no debe exponerse en red.
 
-> **Nota técnica.** `src/index.html` usa `<link rel="icon" href="data:,">`.
-> Con `default-src 'self'` el navegador bloqueará ese recurso y registrará una
-> violación de CSP. Al implementar esta historia hay que servir un favicon real
-> desde `src/` o agregar `img-src 'self' data:` de forma consciente.
+> **Resuelto al implementar.** `src/index.html` usaba
+> `<link rel="icon" href="data:,">`, que `default-src 'self'` habría bloqueado.
+> Se reemplazó por `src/favicon.svg`, servido desde el propio origen, de modo
+> que la CSP no necesita permitir `data:`.
 
 ---
 
