@@ -41,10 +41,12 @@ El puerto se puede cambiar: `npm start -- 8080` o con la variable `PORT`.
 │   │   └── styles.css     Estilos
 │   └── js/
 │       ├── app.js         Conexion con el DOM
-│       └── utils.js       Logica pura (lo que cubren los tests)
+│       ├── incidencias.js Logica pura del registro de incidencias
+│       └── utils.js       Funciones puras de uso general
 ├── tests/
 │   ├── dev-server.test.js Cabeceras de seguridad y path traversal
-│   └── utils.test.js      Tests unitarios
+│   ├── incidencias.test.js Registro de incidencias (HU-01)
+│   └── utils.test.js      Funciones de uso general
 ├── .editorconfig
 ├── .gitignore
 └── package.json

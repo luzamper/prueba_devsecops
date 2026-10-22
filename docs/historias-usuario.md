@@ -27,8 +27,8 @@ revisión manual.
 
 | ID | Historia | Prioridad | Puntos | Estado |
 | --- | --- | --- | --- | --- |
-| HU-01 | Registrar una incidencia | Alta | 5 | Pendiente |
-| HU-02 | Consultar el listado de incidencias | Alta | 3 | Pendiente |
+| HU-01 | Registrar una incidencia | Alta | 5 | **Terminada** |
+| HU-02 | Consultar el listado de incidencias | Alta | 3 | Parcial |
 | HU-03 | Filtrar y buscar incidencias | Media | 3 | Pendiente |
 | HU-04 | Cambiar el estado de una incidencia | Alta | 5 | Pendiente |
 | HU-05 | Conservar las incidencias entre sesiones | Alta | 5 | Pendiente |
@@ -446,3 +446,9 @@ Aplica a todas las historias, además de sus criterios propios:
 > pipeline en el push a *cualquier* rama. Se acotó a `main` y a los pull
 > requests hacia `main` por indicación del equipo. El efecto práctico es que un
 > push a una rama de trabajo no ejecuta CI hasta abrir el pull request.
+
+> **Estado de HU-02 tras implementar HU-01.** El listado ya cumple CA-02.1
+> (orden descendente), CA-02.3 (mensaje con lista vacía) y CA-02.4 (total y
+> desglose por severidad). Queda pendiente CA-02.2 —falta mostrar el
+> identificador y el estado— y CA-02.5, que exige medir el render con 500
+> incidencias.

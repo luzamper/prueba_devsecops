@@ -20,12 +20,60 @@
       </section>
 
       <section class="card">
-        <h2 class="card__title">Contador</h2>
-        <p class="card__text">Valor: <output id="counter">0</output></p>
-        <div class="card__actions">
-          <button type="button" class="button" id="increment">Sumar</button>
-          <button type="button" class="button button--ghost" id="reset">Reiniciar</button>
-        </div>
+        <h2 class="card__title">Registrar incidencia</h2>
+        <form id="form-incidencia" class="form" novalidate>
+          <div class="campo">
+            <label class="campo__etiqueta" for="titulo">Titulo</label>
+            <input
+              class="campo__control"
+              id="titulo"
+              name="titulo"
+              type="text"
+              autocomplete="off"
+              aria-describedby="error-titulo"
+            />
+            <p class="campo__error" id="error-titulo"></p>
+          </div>
+
+          <div class="campo">
+            <label class="campo__etiqueta" for="descripcion">Descripcion</label>
+            <textarea
+              class="campo__control"
+              id="descripcion"
+              name="descripcion"
+              rows="3"
+              aria-describedby="error-descripcion"
+            ></textarea>
+            <p class="campo__error" id="error-descripcion"></p>
+          </div>
+
+          <div class="campo">
+            <label class="campo__etiqueta" for="severidad">Severidad</label>
+            <select
+              class="campo__control"
+              id="severidad"
+              name="severidad"
+              aria-describedby="error-severidad"
+            >
+              <option value="">Seleccione...</option>
+              <option value="baja">Baja</option>
+              <option value="media">Media</option>
+              <option value="alta">Alta</option>
+              <option value="critica">Critica</option>
+            </select>
+            <p class="campo__error" id="error-severidad"></p>
+          </div>
+
+          <div class="card__actions">
+            <button type="submit" class="button">Registrar</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title">Incidencias</h2>
+        <p class="card__text" id="resumen">Sin incidencias registradas</p>
+        <ul class="listado" id="listado"></ul>
       </section>
     </main>
 
