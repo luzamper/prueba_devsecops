@@ -1,0 +1,97 @@
+name: CI
+
+# CA-08.1: se ejecuta en cada push a main y en cada pull request hacia main.
+# Se usa 'pull_request' y NO 'pull_request_target': con pull_request, los PR
+# que vienen de un fork corren sin acceso a los secretos del repositorio
+# (CS-08.4).
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# CS-08.1: permisos minimos. El workflow solo necesita leer el codigo.
+permissions:
+  contents: read
+
+# Cancela ejecuciones superadas por un push posterior en la misma referencia.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pruebas:
+    name: Pruebas (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    # CA-08.4: el pipeline debe terminar en menos de tres minutos.
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # CA-08.3: package.json declara "engines": { "node": ">=20" }.
+        # Se prueba el minimo soportado y las versiones vigentes.
+        node: ["20", "22", "24"]
+
+    steps:
+      # CS-08.2: acciones fijadas por SHA de commit completo, no por etiqueta
+      # movil como @v7, que puede reapuntarse a otro codigo.
+      - name: Descargar el codigo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Preparar Node ${{ matrix.node }}
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      # CS-08.5: instalacion reproducible a partir del archivo de bloqueo.
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Verificar sintaxis y formato
+        run: npm run verificar
+
+      # CA-08.2: si falla, el job queda en rojo y bloquea la fusion del PR.
+      - name: Ejecutar pruebas
+        run: npm test
+
+  cobertura:
+    name: Cobertura
+    runs-on: ubuntu-latest
+    needs: pruebas
+    timeout-minutes: 5
+
+    steps:
+      - name: Descargar el codigo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Preparar Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          # El reporte lcov de node:test requiere Node 22 o superior.
+          node-version: "24"
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Generar el reporte de cobertura
+        run: |
+          mkdir -p coverage
+          node --test --experimental-test-coverage \
+            --test-reporter=lcov --test-reporter-destination=coverage/lcov.info
+
+      # CA-08.5: el reporte queda disponible como artefacto de la ejecucion.
+      - name: Publicar el reporte
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cobertura-lcov
+          path: coverage/lcov.info
+          retention-days: 7
+          if-no-files-found: error

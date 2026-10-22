@@ -34,7 +34,7 @@ revisión manual.
 | HU-05 | Conservar las incidencias entre sesiones | Alta | 5 | Pendiente |
 | HU-06 | Exportar el registro a CSV | Baja | 3 | Pendiente |
 | HU-07 | Servir la aplicación con cabeceras de seguridad | Alta | 3 | **Terminada** |
-| HU-08 | Validar cada cambio con un pipeline de CI | Alta | 5 | Pendiente |
+| HU-08 | Validar cada cambio con un pipeline de CI | Alta | 5 | **Terminada** |
 | HU-09 | Analizar código, dependencias y secretos en CI | Alta | 8 | Pendiente |
 | HU-10 | Usar la aplicación con teclado y lector de pantalla | Media | 5 | Pendiente |
 
@@ -327,9 +327,9 @@ Aplica a todas las historias, además de sus criterios propios:
 
 ### Criterios de aceptación
 
-- **CA-08.1** Dado un push a cualquier rama o un pull request hacia `main`,
-  cuando se dispara el pipeline, entonces se ejecutan `npm test` y la
-  verificación de formato.
+- **CA-08.1** Dado un push a `main` o un pull request hacia `main`, cuando se
+  dispara el pipeline, entonces se ejecutan `npm test` y la verificación de
+  formato. También puede lanzarse a mano (`workflow_dispatch`).
 - **CA-08.2** Dada una prueba que falla, cuando termina el pipeline, entonces
   el resultado es rojo y el pull request queda bloqueado para fusión.
 - **CA-08.3** El pipeline se ejecuta sobre la versión de Node declarada en
@@ -441,3 +441,8 @@ Aplica a todas las historias, además de sus criterios propios:
 2. **HU-01**, **HU-02** y **HU-05**: el núcleo funcional mínimo.
 3. **HU-09**: con código real que analizar, los hallazgos son significativos.
 4. **HU-03**, **HU-04**, **HU-10** y **HU-06**: el resto, por prioridad.
+
+> **Ajuste al implementar HU-08.** CA-08.1 pedía originalmente disparar el
+> pipeline en el push a *cualquier* rama. Se acotó a `main` y a los pull
+> requests hacia `main` por indicación del equipo. El efecto práctico es que un
+> push a una rama de trabajo no ejecuta CI hasta abrir el pull request.

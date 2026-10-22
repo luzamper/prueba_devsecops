@@ -15,8 +15,9 @@ servidor de desarrollo y los tests usan solo modulos nativos de Node.
 | ----------------------- | ------------------------------------------------ |
 | `npm start`             | Levanta el servidor estatico en `localhost:3000` |
 | `npm run dev`           | Igual que `start`, con recarga del servidor      |
-| `npm test`              | Ejecuta los tests unitarios (`node --test`)      |
+| `npm test`              | Ejecuta los tests (`node --test`)                |
 | `npm run test:coverage` | Tests con reporte de cobertura                   |
+| `npm run verificar`     | Sintaxis y formato segun `.editorconfig`         |
 | `npm run audit`         | Auditoria de dependencias                        |
 
 El puerto se puede cambiar: `npm start -- 8080` o con la variable `PORT`.
@@ -26,7 +27,11 @@ El puerto se puede cambiar: `npm start -- 8080` o con la variable `PORT`.
 ```
 .
 ├── scripts/
-│   └── dev-server.js      Servidor estatico de desarrollo (Node nativo)
+│   ├── dev-server.js      Servidor estatico de desarrollo (Node nativo)
+│   └── verificar.js       Verificacion de sintaxis y formato
+├── .github/
+│   └── workflows/
+│       └── ci.yml         Pipeline de integracion continua
 ├── docs/
 │   └── historias-usuario.md  Backlog con criterios de aceptacion y seguridad
 ├── src/
@@ -44,6 +49,27 @@ El puerto se puede cambiar: `npm start -- 8080` o con la variable `PORT`.
 ├── .gitignore
 └── package.json
 ```
+
+## Integracion continua
+
+`.github/workflows/ci.yml` se ejecuta en cada push a `main`, en cada pull
+request hacia `main` y a peticion (`workflow_dispatch`):
+
+- **pruebas**: matriz de Node 20, 22 y 24 (el minimo de `engines` y las
+  versiones vigentes). Instala con `npm ci`, verifica sintaxis y formato, y
+  ejecuta los tests. Si algo falla, el job queda en rojo.
+- **cobertura**: genera `lcov.info` y lo publica como artefacto de la
+  ejecucion, con retencion de 7 dias.
+
+Medidas aplicadas (HU-08):
+
+- Permisos minimos: `contents: read`.
+- Acciones de terceros fijadas por SHA de commit completo, no por etiqueta
+  movil como `@v7`, que puede reapuntarse a otro codigo.
+- Se usa `pull_request` y no `pull_request_target`, de modo que los pull
+  requests desde un fork corran sin acceso a los secretos del repositorio.
+- Instalacion reproducible con `npm ci` a partir de `package-lock.json`.
+- El workflow no usa ni imprime secretos ni variables de entorno.
 
 ## Seguridad del servidor de desarrollo
 

@@ -7,8 +7,9 @@
   "scripts": {
     "start": "node scripts/dev-server.js",
     "dev": "node --watch scripts/dev-server.js",
-    "test": "node --test \"tests/**/*.test.js\"",
-    "test:coverage": "node --test --experimental-test-coverage \"tests/**/*.test.js\"",
+    "test": "node --test",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "verificar": "node scripts/verificar.js",
     "audit": "npm audit --audit-level=moderate"
   },
   "keywords": [
