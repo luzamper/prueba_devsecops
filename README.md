@@ -31,7 +31,8 @@ El puerto se puede cambiar: `npm start -- 8080` o con la variable `PORT`.
 │   └── verificar.js       Verificacion de sintaxis y formato
 ├── .github/
 │   └── workflows/
-│       └── ci.yml         Pipeline de integracion continua
+│       ├── ci.yml         Pipeline de integracion continua
+│       └── dependencias.yml  Analisis de dependencias
 ├── docs/
 │   └── historias-usuario.md  Backlog con criterios de aceptacion y seguridad
 ├── src/
@@ -70,6 +71,23 @@ Medidas aplicadas (HU-08):
   requests desde un fork corran sin acceso a los secretos del repositorio.
 - Instalacion reproducible con `npm ci` a partir de `package-lock.json`.
 - El workflow no usa ni imprime secretos ni variables de entorno.
+
+## Analisis de dependencias
+
+`.github/workflows/dependencias.yml` se ejecuta en cada push a `main`, en cada
+pull request hacia `main`, a peticion y **cada lunes** (los CVE se publican
+despues de fusionar el codigo, asi que un repositorio sin cambios tambien se
+audita):
+
+- **auditoria**: `npm audit --audit-level=moderate` sobre `package-lock.json`.
+  Falla ante hallazgos moderate o superiores y publica el informe JSON como
+  artefacto.
+- **revision** (solo en pull requests): `dependency-review-action` compara la
+  rama con la base y bloquea las dependencias nuevas con vulnerabilidades.
+
+El proyecto no tiene dependencias, de modo que hoy ambos jobs pasan sin
+hallazgos. Para verlos fallar, agregar en una rama de prueba una dependencia con
+un CVE conocido.
 
 ## Seguridad del servidor de desarrollo
 
